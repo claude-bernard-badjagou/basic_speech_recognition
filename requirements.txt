@@ -1,2 +1,2 @@
-speech-recognition
+SpeechRecognition
 streamlit
