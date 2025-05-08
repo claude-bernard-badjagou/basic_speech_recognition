@@ -1,29 +1,30 @@
 import streamlit as st
 import speech_recognition as sr
 
-def transcribe_audio_file(audio_file):
+def transcribe_speech():
+    # Initialize recognizer class
     r = sr.Recognizer()
-    with sr.AudioFile(audio_file) as source:
-        audio_data = r.record(source)
+    # Reading Microphone as source
+    with sr.Microphone() as source:
+        st.info("Speak now...")
+        # listen for speech and store in audio_text variable
+        audio_text = r.listen(source)
+        st.info("Transcribing...")
+
         try:
-            text = r.recognize_google(audio_data, language="fr-FR")
+            # using Google Speech Recognition
+            text = r.recognize_google(audio_text)
             return text
-        except sr.UnknownValueError:
-            return "Je n'ai pas compris l'audio."
-        except sr.RequestError as e:
-            return f"Erreur du service Google Speech Recognition : {e}"
+        except:
+            return "Sorry, I did not get that."
 
 def main():
-    st.title("Application de reconnaissance vocale")
-    st.write("Téléverse un fichier audio au format .wav pour transcription.")
+    st.title("Speech Recognition App")
+    st.write("Click on the microphone to start speaking:")
 
-    uploaded_file = st.file_uploader("Choisis un fichier .wav", type=["wav"])
-    if uploaded_file is not None:
-        st.audio(uploaded_file, format="audio/wav")
-        st.info("Transcription en cours...")
-        transcription = transcribe_audio_file(uploaded_file)
-        st.success("Résultat de la transcription :")
-        st.write(transcription)
-
+    # add a button to trigger speech recognition
+    if st.button("Start Recording"):
+        text = transcribe_speech()
+        st.write("Transcription: ", text)
 if __name__ == "__main__":
     main()
