@@ -1,2 +1,4 @@
-SpeechRecognition
 streamlit
+streamlit-webrtc
+SpeechRecognition
+av
